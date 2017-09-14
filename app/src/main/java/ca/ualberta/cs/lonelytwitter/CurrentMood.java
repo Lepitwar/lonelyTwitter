@@ -32,4 +32,6 @@ public abstract class CurrentMood {
     public void setMood(String mood) {
         Mood = mood;
     }
+
+    //public abstract Boolean
 }
