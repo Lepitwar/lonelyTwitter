@@ -6,20 +6,28 @@ package ca.ualberta.cs.lonelytwitter;
 
 import android.text.BoringLayout;
 
+import java.lang.reflect.Array;
 import java.util.Date;
+import java.util.List;
 
 public abstract class Tweet implements Tweetable {
     private String message;
     private Date date;
+    private List Moods;
 
     public Tweet(String Message){
         date = new Date();
-        this.message = message;
+        this.message = Message;
     }
     public Tweet(String Message, Date date){
         this.date = date;
-        this.message = message;
+        this.message = Message;
     }
+    public void addMood(String Mood){
+        Moods.add(Mood);
+    }
+
+    public List getMoods(){ return Moods;}
     public String getMessage(){
         return message;
     }

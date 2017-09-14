@@ -4,7 +4,7 @@ package ca.ualberta.cs.lonelytwitter; /**
 
 import java.util.Date;
 
-public abstract class ImportantTweet extends Tweet {
+public class ImportantTweet extends Tweet {
     public ImportantTweet(String message){
         super(message);
     }
@@ -15,5 +15,9 @@ public abstract class ImportantTweet extends Tweet {
     @Override
     public Boolean isImportant() {
         return Boolean.TRUE;
+    }
+
+    public String oneMessage() {
+        return null;
     }
 }

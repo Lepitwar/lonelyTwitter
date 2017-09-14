@@ -7,11 +7,17 @@ import java.util.Date;
  */
 
 public class Happy extends CurrentMood {
-    public Happy(String mood) { super(mood); }
+    /**public Happy(String mood) { super(mood); }
     public Happy(String mood, Date date){ super(mood, date);}
-    public String isHappy(){return "Happy"; }
+     */
+    public Happy() { }
+    public Happy( Date date){ super(date);}
+    public String isHappy(){return "I'm Happy!"; }
 
-
+    @Override
+    public String Moods() {
+        return "Happy";
+    }
 
 }
 

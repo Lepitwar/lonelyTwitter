@@ -45,6 +45,10 @@ public class LonelyTwitterActivity extends Activity {
 				//Tweet tweet
 				Tweet tweet = new ImportantTweet("");
 				Tweet tweet1 = new NormalTweet("Hi");
+				CurrentMood moody = new Sad();
+				CurrentMood notmoody = new Happy();
+				tweet.addMood(moody.Moods());
+				tweet1.addMood(notmoody.Moods());
 				try{
 					tweet.setMessage("hello");
 
