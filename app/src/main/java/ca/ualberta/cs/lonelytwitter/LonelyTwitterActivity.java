@@ -1,3 +1,15 @@
+/*
+* LonelyTwitterActtvity
+*
+* Version 1.0
+*
+* September 27, 2017
+*
+ * Copyright (c) 2017. Team X CMPUT301, Univeristy of Alberta - All Rights Reserved
+ * You may use, distribute or modify this code under terms and conditions of the Code of Student
+ * Behaviour at Univeristy of Alberta.
+ * You can find a copy of the license in this project. Otherwise please contact dwaters@ualberta.ca
+ */
 package ca.ualberta.cs.lonelytwitter;
 
 import java.io.BufferedReader;
@@ -25,6 +37,17 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Creates a main LonelyTwitterActivity
+ *
+ * @author dwaters
+ * @version 1.0
+ * @see Tweet
+ * @see NormalTweet
+ * @see CurrentMood
+ * @since 1.0
+ *
+ */
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
@@ -35,16 +58,21 @@ public class LonelyTwitterActivity extends Activity {
 	private ArrayAdapter<Tweet> adapter;
 
 	
-	/** Called when the activity is first created. */
+	/* Called when the activity is first created. */
 	@Override
+	/**
+	 * Creates app homepage for LonelyTwitterActivity
+	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		//Delares text edits
 		bodyText = (EditText) findViewById(R.id.body);
+		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+		//Declares Buttons
 		Button saveButton = (Button) findViewById(R.id.save);
 		Button clearButton = (Button) findViewById(R.id.clear);
-		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+		//Clears history
 		clearButton.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v){
 				tweets.clear();
@@ -54,53 +82,24 @@ public class LonelyTwitterActivity extends Activity {
 
 		});
 
-
+		//Saves Tweets
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-
-
 					setResult(RESULT_OK);
 					String text = bodyText.getText().toString();
 					tweets.add(new NormalTweet(text));
 					adapter.notifyDataSetChanged();
 					saveInFile();
 
-				/**
-				setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
-				saveInFile(text, new Date(System.currentTimeMillis()));
-
-				//Tweet tweet
-				Tweet tweet = new ImportantTweet("");
-				Tweet tweet1 = new NormalTweet("Hi");
-				CurrentMood moody = new Sad();
-				CurrentMood notmoody = new Happy();
-				tweet.addMood(moody.Moods());
-				tweet1.addMood(notmoody.Moods());
-				try{
-					tweet.setMessage("hello");
-
-				}catch(TweetTooLongException e){
-
-				}
-
-				Tweetable tweet3 = new ImportantTweet(" ");
-
-				ArrayList<Tweet>tweetList = new ArrayList<Tweet>();
-				tweetList.add(tweet);
-				tweetList.add(tweet1);
-
-				Log.d("", "The  isImportant method on tweet returns"+ tweet.isImportant() );
-				Log.d("", "The  isImportant method on tweet1 returns"+ tweet1.isImportant() );
-				//finsh();
-				 */
-
 			}
 		});
 	}
 
 	@Override
+	/**
+	 * Loads file and sets OldTweetList
+	 */
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
@@ -110,6 +109,10 @@ public class LonelyTwitterActivity extends Activity {
 		oldTweetsList.setAdapter(adapter);
 	}
 
+	/**
+	 * Loads tweets from a saved file
+	 * else creates a new tweet array
+	 */
 	private void loadFromFile() {
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
@@ -126,7 +129,10 @@ public class LonelyTwitterActivity extends Activity {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
+	/**
+	 * Saves all tweets that are created
+	 */
 	private void saveInFile() {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME,
