@@ -26,6 +26,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import io.searchbox.core.Update;
+
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
@@ -65,13 +67,17 @@ public class LonelyTwitterActivity extends Activity {
 
 			public void onClick(View v) {
 				setResult(RESULT_OK);
-				//tweetList.clear();
+				String text = bodyText.getText().toString();
+				tweetList.clear();
 				//deleteFile(FILENAME);  // TODO deprecate this button
 				adapter.notifyDataSetChanged();
 				ElasticsearchTweetController.GetTweetsTask getTweetsTask =
 						new ElasticsearchTweetController.GetTweetsTask();
-				getTweetsTask.doInBackground("test");
-				//getTweetsTask.execute("");
+				Log.i("MSG", "Text: "+text );
+				getTweetsTask.doInBackground( text, "query");
+				//String query = "{\n" + " \"query\": { \"term\": {\"message\":\"" + text + "\"} }\n" + "}";
+				//getTweetsTask.execute(new Update.Builder(query).index("twitter").type("tweet").build());
+				getTweetsTask.execute("");
 			}
 		});
 

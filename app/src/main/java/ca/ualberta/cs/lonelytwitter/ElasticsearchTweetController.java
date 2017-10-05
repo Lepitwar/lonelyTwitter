@@ -10,23 +10,25 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.List;
 import java.util.ArrayList;
 
+import io.searchbox.client.JestResult;
+import io.searchbox.client.JestResultHandler;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 /**
  * Created by romansky on 10/20/16.
  */
 public class ElasticsearchTweetController {
     private static JestDroidClient client;
-
     // TODO we need a function which adds tweets to elastic search
     public static class AddTweetsTask extends AsyncTask<NormalTweet, Void, Void> {
 
         @Override
         protected Void doInBackground(NormalTweet... tweets) {
-            //verifySettings();
+            verifySettings();
 
             for (NormalTweet tweet : tweets) {
                 Index index = new Index.Builder(tweet).index("testing").type("tweet").build();
@@ -54,19 +56,27 @@ public class ElasticsearchTweetController {
     public static class GetTweetsTask extends AsyncTask<String, Void, ArrayList<NormalTweet>> {
         @Override
         protected ArrayList<NormalTweet> doInBackground(String... search_parameters) {
-            verifySettings();
+            //verifySettings();
 
             ArrayList<NormalTweet> tweets = new ArrayList<NormalTweet>();
+            String query = search_parameters[0];
 
-                // TODO Build the query
-            Search search = new Search.Builder(search_parameters[0])
+            Log.i("Test", "doInBackground: search_parameters Length: "+search_parameters.length);
+            if(search_parameters.length == 1) {
+                //query=search_parameters[0];
+            }else {
+                Log.i("Test", "doInBackground: search_parameters!: "+search_parameters[0]+" Next 1:"+search_parameters[0]);
+                query = "{\n" + " \"query\": { \"term\": {\"message\":\"" + search_parameters[0] + "\"} }\n" + "}";
+            }
+            query = "{\n" + " \"query\": { \"term\": {\"message\":\"" + "test" + "\"} }\n" + "}";
+            Search search = new Search.Builder(query)
                     .addIndex("testing")
-                    .addType("tweet")
-                    .build();
+                    .addType("tweet").build();
             try {
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()){
                     List<NormalTweet> foundTweets = result.getSourceAsObjectList(NormalTweet.class);
+
                     tweets.addAll(foundTweets);
                 }else{
                     Log.i("Error", "Search Query Failed ");
@@ -74,12 +84,20 @@ public class ElasticsearchTweetController {
                // TODO get the results of the query
             }
             catch (Exception e) {
+                //client.shutdownClient();
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.e("Error", "errror", e);
             }
 
             return tweets;
         }
+
+
+
+
     }
+
+
 
 
 
