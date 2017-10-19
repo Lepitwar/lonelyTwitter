@@ -68,7 +68,7 @@ public class ElasticsearchTweetController {
                 Log.i("Test", "doInBackground: search_parameters!: "+search_parameters[0]+" Next 1:"+search_parameters[0]);
                 query = "{\n" + " \"query\": { \"term\": {\"message\":\"" + search_parameters[0] + "\"} }\n" + "}";
             }
-            query = "{\n" + " \"query\": { \"term\": {\"message\":\"" + "test" + "\"} }\n" + "}";
+            //query = "{\n" + " \"query\": { \"term\": {\"message\":\"" + "test" + "\"} }\n" + "}";
             Search search = new Search.Builder(query)
                     .addIndex("testing")
                     .addType("tweet").build();
